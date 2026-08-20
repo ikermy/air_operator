@@ -1,0 +1,126 @@
+openapi: 3.0.3
+info:
+  title: air_operator HTTP API
+  description: HTTP API виджета оператора и мониторинга сервиса.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Operator
+    description: Подключение к операторской сессии
+  - name: Monitoring
+    description: Мониторинг сервиса
+paths:
+  /metrics:
+    get:
+      tags: [Monitoring]
+      summary: Получить Prometheus-метрики
+      operationId: getMetrics
+      responses:
+        '200':
+          description: Метрики Prometheus
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /oper/available:
+    get:
+      tags: [Operator]
+      summary: Проверить доступность сервиса
+      operationId: getOperatorAvailability
+      responses:
+        '200':
+          description: Сервис доступен
+
+  /op:
+    get:
+      tags: [Operator]
+      summary: Открыть SSE-соединение с оператором
+      operationId: subscribeOperatorEvents
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/DialogId'
+      responses:
+        '200':
+          description: Поток событий оператора
+          content:
+            text/event-stream:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+    post:
+      tags: [Operator]
+      summary: Отправить сообщение оператору
+      operationId: sendOperatorMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperatorMessageRequest'
+      responses:
+        '200':
+          description: Сообщение принято
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: Сессия не найдена
+        '504':
+          description: Тайм-аут отправки сообщения
+
+components:
+  parameters:
+    UserId:
+      name: user_id
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+    DialogId:
+      name: dialog_id
+      in: query
+      required: true
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+
+  schemas:
+    OperatorMessageRequest:
+      type: object
+      required: [user_id, dialog_id, sid, msg]
+      properties:
+        user_id:
+          type: integer
+          format: int32
+          minimum: 1
+        dialog_id:
+          type: integer
+          format: int64
+          minimum: 1
+        sid:
+          type: integer
+          format: int64
+          description: Telegram ID оператора.
+        msg:
+          type: object
+          additionalProperties: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    BadRequest:
+      description: Некорректный запрос
+      content:
+        text/plain:
+          schema:
+            type: string

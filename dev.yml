@@ -1,0 +1,60 @@
+services:
+  # ── air_oper — Bot операторского режима ────────────────────────────────────────
+  oper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    logging:
+      driver: local
+      options:
+        max-size: 5m
+        max-file: 2
+    labels:
+      logging: loki
+      app: air
+      service: oper
+      tier: backend
+    image: oper:dev   # фиксированное имя образа
+    container_name: oper_app
+    restart: unless-stopped
+    environment:
+      - TZ=America/Argentina/Buenos_Aires
+
+      # ── База данных (локальный сервер на хосте) ─────────────────────────────
+      - DB_HOST=air_db:3306
+      - DB_NAME=air
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+
+      # ── лимит истории сообщений для передачи оператору ─────────────────────
+      - HISTORY_LIMIT_MESSAGES=20
+
+      # ── gRPC конфигурация (для получения настроек Telegram-бота) ───────────
+      # Указывает адрес ConfigService от AiR_ORCHESTRATOR (в Docker-сети или с хоста)
+      - GRPC_CONFIG_HOST=airorc:50051
+
+      # Путь к файлу с сервисным ключом (примонтирован через volume)
+      - SERVICE_KEY_FILE=/run/secrets/service_key
+
+      # ── Домен и порты смежных сервисов ───────────────────────────────────────
+      - REAL_URL=localhost
+
+      # ── Логирование ──────────────────────────────────────────────────────────
+      - LOG_LEVEL=debug
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    networks:
+      - monitoring_shared
+      - air_shared
+
+    # Волюмы для логов и сервисного ключа
+    volumes:
+      - ./.service_key:/run/secrets/service_key:ro
+
+networks:
+  monitoring_shared:
+    external: true
+  air_shared:
+    external: true
