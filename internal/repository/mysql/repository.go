@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ikermy/air_common/pkg/comdb"
-	"github.com/ikermy/air_common/pkg/mode"
+	"github.com/ikermy/air-common/pkg/comdb"
+	"github.com/ikermy/air-common/pkg/mode"
 )
 
 // Repository реализация интерфейса Repository для MySQL

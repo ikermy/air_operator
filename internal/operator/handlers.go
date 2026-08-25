@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ikermy/air_common/pkg/model"
-	"github.com/ikermy/air_logger/v2/pkg/logger"
+	"github.com/ikermy/air-common/pkg/model"
+	"github.com/ikermy/air-logger/v2/pkg/logger"
 )
 
 func (l *Listener) available(w http.ResponseWriter, _ *http.Request) {

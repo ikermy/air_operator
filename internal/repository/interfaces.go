@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/ikermy/air_common/pkg/comdb"
+	"github.com/ikermy/air-common/pkg/comdb"
 )
 
 // InternalRepository внутренние методы работы с БД
@@ -14,7 +14,7 @@ type InternalRepository interface {
 	GetOperators(ctx context.Context, filterChanged bool) ([]domain.OperatorChannels, error)
 }
 
-// ExternalDBRepository интерфейс для внешних методов БД (из AiR_Common)
+// ExternalDBRepository интерфейс для внешних методов БД (из air-common)
 type ExternalDBRepository interface {
 	comdb.Exterior
 }

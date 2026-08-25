@@ -4,7 +4,7 @@ import (
 	metrics2 "air_operator/internal/metrics"
 	stdhttp "net/http"
 
-	"github.com/ikermy/air_logger/v2/pkg/logger"
+	"github.com/ikermy/air-logger/v2/pkg/logger"
 )
 
 // Listener provides the operator handlers needed by the HTTP transport.

@@ -9,10 +9,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/ikermy/air_common/pkg/com"
-	"github.com/ikermy/air_common/pkg/endpoint"
-	"github.com/ikermy/air_common/pkg/rpc"
-	"github.com/ikermy/air_logger/v2/pkg/logger"
+	"github.com/ikermy/air-common/pkg/com"
+	"github.com/ikermy/air-common/pkg/endpoint"
+	"github.com/ikermy/air-common/pkg/rpc"
+	"github.com/ikermy/air-logger/v2/pkg/logger"
 )
 
 type End interface {

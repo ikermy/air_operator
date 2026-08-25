@@ -1,6 +1,6 @@
 # AiR Operator
 
-![air_operator](air_operator_logo.png)
+![air_operator](logo.png)
 
 [🇷🇺 Russian version](README.ru.md)
 
@@ -79,8 +79,8 @@ The full API description is available in [`doc/openapi.yaml`](doc/openapi.yaml).
 - Server-Sent Events (SSE);
 - Prometheus;
 - Docker and Docker Compose;
-- `air_common` — shared models, configuration, RPC, and database access;
-- `air_logger` — logging.
+- `air-common` — shared models, configuration, RPC, and database access;
+- `air-logger` — logging.
 
 ## Running
 
@@ -129,10 +129,10 @@ REAL_URL
 
 
 ## Related Services
-- [air_common](https://github.com/ikermy/air_common) — Common library for AI microservices
+- [air-common](https://github.com/ikermy/air-common) — Common library for AI microservices
 - [air_orchestrator](https://github.com/ikermy/air_orchestrator) — Main orchestration service
 - [marusia_crm](https://github.com/ikermy/marusia_crm) — Service for integrating with external CRM systems
-- [air_logger](https://github.com/ikermy/air_logger) — Auxiliary event-logging service with multi-user support and support for the Loki log collector
+- [air-logger](https://github.com/ikermy/air-logger) — Auxiliary event-logging service with multi-user support and support for the Loki log collector
 
 ## License
 

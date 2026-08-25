@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ikermy/air_common/pkg/model"
+	"github.com/ikermy/air-common/pkg/model"
 )
 
 // MockDB реализует интерфейс DB для тестирования

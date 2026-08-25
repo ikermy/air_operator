@@ -7,8 +7,8 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/ikermy/air_common/pkg/comdb"
-	"github.com/ikermy/air_logger/v2/pkg/logger"
+	"github.com/ikermy/air-common/pkg/comdb"
+	"github.com/ikermy/air-logger/v2/pkg/logger"
 
 	_ "github.com/go-sql-driver/mysql"
 )

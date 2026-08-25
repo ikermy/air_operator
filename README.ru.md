@@ -1,6 +1,6 @@
 # AiR Operator
 
-![air_operator](air_operator_logo.png)
+![air_operator](logo.png)
 
 [🇬🇧 English version](README.md)
 
@@ -79,8 +79,8 @@ POST /op
 - Server-Sent Events (SSE);
 - Prometheus;
 - Docker и Docker Compose;
-- `air_common` — общие модели, конфигурация, RPC и работа с БД;
-- `air_logger` — логирование.
+- `air-common` — общие модели, конфигурация, RPC и работа с БД;
+- `air-logger` — логирование.
 
 ## Запуск
 
@@ -129,10 +129,10 @@ REAL_URL
 
 
 ## Связанные сервисы
-- [air_common](https://github.com/ikermy/air_common) — Общая библиотека для AI‑микросервисов
+- [air-common](https://github.com/ikermy/air-common) — Общая библиотека для AI‑микросервисов
 - [air_orchestrator](https://github.com/ikermy/air_orchestrator) — Главный сервис оркестратор
 - [marusia_crm](https://github.com/ikermy/marusia_crm) — Сервис интеграции с внешними CRM системами
-- [air_logger](https://github.com/ikermy/air_logger) — Вспомогательный сервис логирования событий с поддержкой многопользовательского режима и поддержкой сборщика логов loki
+- [air-logger](https://github.com/ikermy/air-logger) — Вспомогательный сервис логирования событий с поддержкой многопользовательского режима и поддержкой сборщика логов loki
 
 ## Лицензия
 
