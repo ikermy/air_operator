@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ikermy/air-common/pkg/model"
+	"github.com/ikermy/air-common/v2/pkg/model"
 	"github.com/ikermy/air-logger/v2/pkg/logger"
 )
 
@@ -54,7 +54,7 @@ func (l *Listener) handleEvents(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	userID := uint32(userID64)
+	userID := uint64(userID64)
 
 	// Получаю tg_id, для пользователя может быть несколько TG аккаунтов
 	operatorsTg := l.operators.GetTGs(userID)
@@ -115,7 +115,7 @@ func (l *Listener) handleEvents(w http.ResponseWriter, r *http.Request) {
 
 	// Получаю историю сообщений если она есть
 	historyStartedAt := time.Now()
-	data, err := l.db.DialogLastMessages(dialogID, domain.HistoryLimitMessages)
+	data, err := l.db.DialogLastMessages(r.Context(), dialogID, uint16(domain.HistoryLimitMessages))
 	if err != nil {
 		metrics.ObserveHistoryRequest("error", historyStartedAt)
 		logger.Error("failed to get last messages for dialog %d: %v", dialogID, err)
@@ -268,7 +268,7 @@ func (l *Listener) handleMessage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type envelope struct {
-		UserID   uint32         `json:"user_id"`
+		UserID uint64         `json:"user_id"`
 		DialogID uint64         `json:"dialog_id"`
 		TgID     int64          `json:"sid"` // бывший tg_id Telegram ID оператора
 		Msg      *model.Message `json:"msg,omitempty"`

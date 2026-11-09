@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ikermy/air-common/pkg/model"
+	"github.com/ikermy/air-common/v2/pkg/model"
 )
 
 // MockDB реализует интерфейс DB для тестирования
@@ -1039,7 +1039,7 @@ func TestSetLastRoute_Concurrent(t *testing.T) {
 		wg.Add(1)
 		go func(id int64) {
 			defer wg.Done()
-			listener.setLastRoute(id, uint32(id), uint64(id*10))
+			listener.setLastRoute(id, uint64(id), uint64(id*10))
 		}(int64(i))
 	}
 
@@ -1051,7 +1051,7 @@ func TestSetLastRoute_Concurrent(t *testing.T) {
 		if !ok {
 			t.Errorf("Route %d should exist", i)
 		}
-		if userID != uint32(i) {
+		if userID != uint64(i) {
 			t.Errorf("Expected userID %d, got %d", i, userID)
 		}
 		if dialogID != uint64(i*10) {

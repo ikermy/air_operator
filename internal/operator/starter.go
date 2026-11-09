@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ikermy/air-common/pkg/model"
+	"github.com/ikermy/air-common/v2/pkg/model"
 	"github.com/ikermy/air-logger/v2/pkg/logger"
 )
 

@@ -8,7 +8,7 @@
 ![License](https://img.shields.io/badge/license-MIT-blue)
 [![Telegram](https://img.shields.io/badge/Telegram-Join%20Chat-blue?logo=telegram)](https://t.me/marusia_dev)
 
-The operator microservice of the AiR platform. The service connects the client interface with operators in Telegram: it receives user messages, forwards them to an operator, and sends the responses back via Server-Sent Events (SSE).
+The operator microservice of the marusia_ai platform. The service connects the client interface with operators in Telegram: it receives user messages, forwards them to an operator, and sends the responses back via Server-Sent Events (SSE).
 
 ## Features
 

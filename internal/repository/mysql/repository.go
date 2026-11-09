@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ikermy/air-common/pkg/comdb"
-	"github.com/ikermy/air-common/pkg/mode"
+	"github.com/ikermy/air-common/v2/pkg/comdb"
+	"github.com/ikermy/air-common/v2/pkg/mode"
 )
 
 // Repository реализация интерфейса Repository для MySQL
@@ -19,8 +19,8 @@ type Repository struct {
 	db *comdb.DB
 }
 
-func (r *Repository) DialogLastMessages(dialogId uint64, limit uint8) (json.RawMessage, error) {
-	return r.db.ReadDialog(dialogId, limit)
+func (r *Repository) DialogLastMessages(_ context.Context, dialogId uint64, limit uint16) (json.RawMessage, error) {
+	return r.db.ReadDialog(dialogId, uint8(limit))
 }
 
 // New создаёт новый MySQL репозиторий пользователей
@@ -122,7 +122,7 @@ func (r *Repository) GetOperators(ctx context.Context, filterChanged bool) ([]do
 	var result []domain.OperatorChannels
 	for rows.Next() {
 		var (
-			userId                         uint32
+			userId uint64
 			telegramStr, widgetStr         sql.NullString
 			telegramEnabled, widgetEnabled sql.NullBool
 		)

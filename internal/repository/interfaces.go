@@ -5,12 +5,12 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/ikermy/air-common/pkg/comdb"
+	"github.com/ikermy/air-common/v2/pkg/comdb"
 )
 
 // InternalRepository внутренние методы работы с БД
 type InternalRepository interface {
-	DialogLastMessages(dialogId uint64, limit uint8) (json.RawMessage, error)
+	DialogLastMessages(ctx context.Context, dialogId uint64, limit uint16) (json.RawMessage, error)
 	GetOperators(ctx context.Context, filterChanged bool) ([]domain.OperatorChannels, error)
 }
 

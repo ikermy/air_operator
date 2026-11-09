@@ -11,7 +11,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ikermy/air-common/pkg/model"
+	"github.com/ikermy/air-common/v2/pkg/model"
 	"github.com/ikermy/air-logger/v2/pkg/logger"
 )
 
@@ -54,7 +54,7 @@ func (s *SessionInfo) IsExpired(timeout time.Duration) bool {
 // users[userID][tgID][dialogID] => *SessionInfo
 type OperatorsMap struct {
 	mu    sync.RWMutex
-	users map[uint32]map[int64]map[uint64]*SessionInfo
+	users map[uint64]map[int64]map[uint64]*SessionInfo
 }
 
 func (o *OperatorsMap) reportMetricsLocked() {
@@ -71,11 +71,11 @@ func (o *OperatorsMap) reportMetricsLocked() {
 }
 
 // AddTG гарантирует, что у userID существует запись для tgID
-func (o *OperatorsMap) AddTG(userID uint32, tgID int64) {
+func (o *OperatorsMap) AddTG(userID uint64, tgID int64) {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	if o.users == nil {
-		o.users = make(map[uint32]map[int64]map[uint64]*SessionInfo)
+		o.users = make(map[uint64]map[int64]map[uint64]*SessionInfo)
 	}
 	if _, ok := o.users[userID]; !ok {
 		o.users[userID] = make(map[int64]map[uint64]*SessionInfo)
@@ -88,11 +88,11 @@ func (o *OperatorsMap) AddTG(userID uint32, tgID int64) {
 
 // AddSession создаёт/заменяет канал SSE для (userID,tgID,dialogID) и возвращает его.
 // Если существовал старый канал, он будет закрыт.
-func (o *OperatorsMap) AddSession(userID uint32, tgID int64, dialogID uint64) *SessionInfo {
+func (o *OperatorsMap) AddSession(userID uint64, tgID int64, dialogID uint64) *SessionInfo {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	if o.users == nil {
-		o.users = make(map[uint32]map[int64]map[uint64]*SessionInfo)
+		o.users = make(map[uint64]map[int64]map[uint64]*SessionInfo)
 	}
 	if _, ok := o.users[userID]; !ok {
 		o.users[userID] = make(map[int64]map[uint64]*SessionInfo)
@@ -118,7 +118,7 @@ func (o *OperatorsMap) AddSession(userID uint32, tgID int64, dialogID uint64) *S
 }
 
 // GetSession возвращает данные сессии SSE для (userID,tgID,dialogID)
-func (o *OperatorsMap) GetSession(userID uint32, tgID int64, dialogID uint64) *SessionInfo {
+func (o *OperatorsMap) GetSession(userID uint64, tgID int64, dialogID uint64) *SessionInfo {
 	o.mu.RLock()
 	defer o.mu.RUnlock()
 	if o.users == nil {
@@ -133,7 +133,7 @@ func (o *OperatorsMap) GetSession(userID uint32, tgID int64, dialogID uint64) *S
 }
 
 // RemoveSession удаляет диалог, только если текущий канал совпадает с переданным
-func (o *OperatorsMap) RemoveSession(userID uint32, tgID int64, dialogID uint64, info *SessionInfo) bool {
+func (o *OperatorsMap) RemoveSession(userID uint64, tgID int64, dialogID uint64, info *SessionInfo) bool {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	if o.users == nil {
@@ -157,7 +157,7 @@ func (o *OperatorsMap) RemoveSession(userID uint32, tgID int64, dialogID uint64,
 }
 
 // RemoveDialog удаляет dialogID для конкретного tgID пользователя (безусловно).
-func (o *OperatorsMap) RemoveDialog(userID uint32, tgID int64, dialogID uint64) {
+func (o *OperatorsMap) RemoveDialog(userID uint64, tgID int64, dialogID uint64) {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	if o.users == nil {
@@ -176,7 +176,7 @@ func (o *OperatorsMap) RemoveDialog(userID uint32, tgID int64, dialogID uint64) 
 }
 
 // RemoveTG удаляет tgID (и все его dialogID) у пользователя
-func (o *OperatorsMap) RemoveTG(userID uint32, tgID int64) {
+func (o *OperatorsMap) RemoveTG(userID uint64, tgID int64) {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	if o.users == nil {
@@ -197,7 +197,7 @@ func (o *OperatorsMap) RemoveTG(userID uint32, tgID int64) {
 }
 
 // DeleteUser полностью удаляет пользователя со всеми его tgID и dialogID
-func (o *OperatorsMap) DeleteUser(userID uint32) {
+func (o *OperatorsMap) DeleteUser(userID uint64) {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	if o.users == nil {
@@ -218,7 +218,7 @@ func (o *OperatorsMap) DeleteUser(userID uint32) {
 }
 
 // GetTGs возвращает список tgID по userID
-func (o *OperatorsMap) GetTGs(userID uint32) []int64 {
+func (o *OperatorsMap) GetTGs(userID uint64) []int64 {
 	o.mu.RLock()
 	defer o.mu.RUnlock()
 	if o.users == nil {
@@ -237,7 +237,7 @@ func (o *OperatorsMap) GetTGs(userID uint32) []int64 {
 // GetTg возвращает tgID по userID:
 // 1) если есть несколько tgID без активных диалогов – случайный из них
 // 2) иначе случайный среди tgID с минимальным числом диалогов
-func (o *OperatorsMap) GetTg(userID uint32) int64 {
+func (o *OperatorsMap) GetTg(userID uint64) int64 {
 	o.mu.RLock()
 	defer o.mu.RUnlock()
 	if o.users == nil {
@@ -277,7 +277,7 @@ func (o *OperatorsMap) GetTg(userID uint32) int64 {
 }
 
 // GetDialogs возвращает список dialogID по паре (userID, tgID)
-func (o *OperatorsMap) GetDialogs(userID uint32, tgID int64) []uint64 {
+func (o *OperatorsMap) GetDialogs(userID uint64, tgID int64) []uint64 {
 	o.mu.RLock()
 	defer o.mu.RUnlock()
 	if o.users == nil {
@@ -296,7 +296,7 @@ func (o *OperatorsMap) GetDialogs(userID uint32, tgID int64) []uint64 {
 }
 
 // HasDialog проверяет наличие dialogID у пары (userID, tgID)
-func (o *OperatorsMap) HasDialog(userID uint32, tgID int64, dialogID uint64) bool {
+func (o *OperatorsMap) HasDialog(userID uint64, tgID int64, dialogID uint64) bool {
 	o.mu.RLock()
 	defer o.mu.RUnlock()
 	if o.users == nil {
@@ -312,7 +312,7 @@ func (o *OperatorsMap) HasDialog(userID uint32, tgID int64, dialogID uint64) boo
 }
 
 // UpdateLastActive обновляет время последней активности сессии на текущее
-func (o *OperatorsMap) UpdateLastActive(userID uint32, tgID int64, dialogID uint64) {
+func (o *OperatorsMap) UpdateLastActive(userID uint64, tgID int64, dialogID uint64) {
 	if session := o.GetSession(userID, tgID, dialogID); session != nil {
 		session.updateLastActive()
 	}
@@ -332,7 +332,7 @@ type Listener struct {
 	tg Telega
 
 	// Маршрутизация входящих из TG: tgID -> (userID, dialogID)
-	lastRoute sync.Map // key int64 -> struct{userID uint32; dialogID uint64}
+	lastRoute sync.Map // key int64 -> struct{userID uint64; dialogID uint64}
 }
 
 func New(parent context.Context, d *db.DB, t *telegram.Telega, botName string) *Listener {
@@ -357,18 +357,18 @@ func New(parent context.Context, d *db.DB, t *telegram.Telega, botName string) *
 func (l *Listener) SetTelegramSender(sender Telega) { l.tg = sender }
 
 // setLastRoute сохраняет последнюю активную связку для tgID
-func (l *Listener) setLastRoute(tgID int64, userID uint32, dialogID uint64) {
+func (l *Listener) setLastRoute(tgID int64, userID uint64, dialogID uint64) {
 	l.lastRoute.Store(tgID, struct {
-		userID   uint32
+		userID uint64
 		dialogID uint64
 	}{userID: userID, dialogID: dialogID})
 }
 
 // getLastRoute получает связку для tgID
-func (l *Listener) getLastRoute(tgID int64) (uint32, uint64, bool) {
+func (l *Listener) getLastRoute(tgID int64) (uint64, uint64, bool) {
 	if v, ok := l.lastRoute.Load(tgID); ok {
 		p := v.(struct {
-			userID   uint32
+			userID uint64
 			dialogID uint64
 		})
 		return p.userID, p.dialogID, true
@@ -410,7 +410,7 @@ func (l *Listener) DeliverIncomingFromTG(tgID int64, msg model.Message) {
 
 // operatorLayerListener слушает канал сообщений для оператора и отправляет их в Телеграм
 // также обновляет lastRoute для tgID, чтобы входящие сообщения маршрутизировались
-func (l *Listener) operatorLayerListener(ctx context.Context, session *SessionInfo, userID uint32, tgID int64, dialogID uint64) {
+func (l *Listener) operatorLayerListener(ctx context.Context, session *SessionInfo, userID uint64, tgID int64, dialogID uint64) {
 	if l.tg == nil {
 		logger.Warn("Отправитель Telegram не установлен, пропуск отправки")
 		return

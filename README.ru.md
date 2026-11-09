@@ -8,7 +8,7 @@
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue)
 [![Telegram](https://img.shields.io/badge/Telegram-Join%20Chat-blue?logo=telegram)](https://t.me/marusia_dev)
 
-Операторский микросервис платформы AiR. Сервис связывает клиентский интерфейс с операторами в Telegram: принимает сообщения пользователя, передаёт их оператору и возвращает ответы обратно через Server-Sent Events (SSE).
+Операторский микросервис платформы marusia_ai. Сервис связывает клиентский интерфейс с операторами в Telegram: принимает сообщения пользователя, передаёт их оператору и возвращает ответы обратно через Server-Sent Events (SSE).
 
 ## Возможности
 

@@ -7,7 +7,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/ikermy/air-common/pkg/comdb"
+	"github.com/ikermy/air-common/v2/pkg/comdb"
 	"github.com/ikermy/air-logger/v2/pkg/logger"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -19,12 +19,8 @@ type DB struct {
 	repo repository.Repository
 }
 
-//func (d *DB) DialogLastMessages(ctx context.Context, dialogId uint64, limit uint16) (json.RawMessage, error) {
-//	return d.repo.Internal.DialogLastMessages(ctx, dialogId, limit)
-//}
-
-func (d *DB) DialogLastMessages(dialogId uint64, limit uint8) (json.RawMessage, error) {
-	return d.repo.Internal.DialogLastMessages(dialogId, limit)
+func (d *DB) DialogLastMessages(ctx context.Context, dialogId uint64, limit uint16) (json.RawMessage, error) {
+	return d.repo.Internal.DialogLastMessages(ctx, dialogId, limit)
 }
 
 func (d *DB) GetOperators(ctx context.Context, filterChanged bool) ([]domain.OperatorChannels, error) {

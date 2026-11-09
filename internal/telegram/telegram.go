@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ikermy/air-common/pkg/model"
-	"github.com/ikermy/air-common/pkg/rpc/proto"
+	"github.com/ikermy/air-common/v2/pkg/model"
+	"github.com/ikermy/air-common/v2/pkg/rpc/proto"
 	"github.com/ikermy/air-logger/v2/pkg/logger"
 	tele "gopkg.in/telebot.v4"
 )

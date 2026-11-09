@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ikermy/air-common/pkg/model"
+	"github.com/ikermy/air-common/v2/pkg/model"
 )
 
 func executeRequest(handler http.HandlerFunc, req *http.Request) *httptest.ResponseRecorder {
