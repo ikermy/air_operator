@@ -3,8 +3,8 @@ module air_operator
 go 1.26.0
 
 require (
-	github.com/ikermy/air-common/v2 v2.0.3
 	github.com/go-sql-driver/mysql v1.10.0
+	github.com/ikermy/air-common/v2 v2.0.4
 	github.com/ikermy/air-logger/v2 v2.1.4
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.24.0
@@ -32,7 +32,7 @@ require (
 	github.com/prometheus/common v0.70.0 // indirect
 	github.com/prometheus/procfs v0.21.1 // indirect
 	golang.org/x/net v0.62.0 // indirect
-	golang.org/x/oauth2 v0.37.0 // indirect
+	golang.org/x/oauth2 v0.38.0 // indirect
 	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/text v0.43.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20261104224025-d1e00e9f33ab // indirect
