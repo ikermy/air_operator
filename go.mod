@@ -5,7 +5,7 @@ go 1.26.0
 require (
 	github.com/go-sql-driver/mysql v1.10.0
 	github.com/ikermy/air-common/v2 v2.0.4
-	github.com/ikermy/air-logger/v2 v2.1.4
+	github.com/ikermy/air-logger/v2 v2.1.5
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.24.0
 	gopkg.in/telebot.v4 v4.0.0-beta.10
